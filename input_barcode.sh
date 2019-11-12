@@ -46,7 +46,11 @@ do
     [ -n "${input_code}" ] && {
         ID_TIME=$(date +'%H%M%S')
         ID_MILI=$(($(date +%s%N)/1000000))
-        echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA
+        echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA || {
+            beep ng
+            continue
+        }
+        beep ok
     }
 
 done
