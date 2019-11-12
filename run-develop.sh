@@ -9,4 +9,5 @@ docker run \
     --env-file $(pwd)/ENVFILE.env \
     -v $(pwd)/input_barcode.sh:/usr/local/bin/input_barcode \
     -v $(pwd)/data/:/data \
-    $NAME_IMAGE_DOCKER
+    $NAME_IMAGE_DOCKER \
+    input_barcode
