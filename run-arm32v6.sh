@@ -18,10 +18,4 @@ PATH_DIR_CURR=$(cd $(dirname ${PATH_FILE_SCRIPT:-$0}); pwd)
 
 cd $PATH_DIR_CURR
 git pull origin && \
-docker-compose --file docker-compose.arm32v6.yml \
-  up && \
-docker-compose --file docker-compose.arm32v6.yml \
-  run \
-  -v ./data:/data \
-  --entrypoint input_barcode \
-  barcodekeeper
+docker-compose up barcodekeeper
