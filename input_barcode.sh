@@ -14,7 +14,10 @@ PATH_FILE_SCRIPT=$(readlink $0)
 PATH_DIR_CURR=$(cd $(dirname ${PATH_FILE_SCRIPT:-$0}); pwd)
 
 # 環境変数ファイルの読み込み
-source "${PATH_DIR_CURR}/ENVFILE.env"
+NAME_FILE_ENV='ENVFILE.env'
+PATH_FILE_ENV="${PATH_DIR_CURR}/${NAME_FILE_ENV}"
+echo 'Source path:' $PATH_FILE_ENV
+source $PATH_FILE_ENV
 
 # 保存先のパス指定
 NAME_FILE_DATA="barcode_${ID_DATE}.csv"
