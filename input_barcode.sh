@@ -1,5 +1,9 @@
 #!/bin/sh
 
+clear
+
+echo 'Switching to fbterm'
+
 fbterm \
   --font-names=mono \
   --font-size=16 \
