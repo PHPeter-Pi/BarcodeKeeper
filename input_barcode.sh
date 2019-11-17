@@ -2,13 +2,6 @@
 
 clear
 
-echo 'Switching to fbterm'
-
-fbterm \
-  --font-names=mono \
-  --font-size=16 \
-  --ambiguous-wide
-
 echo '==================='
 echo ' バーコードレコーダー'
 echo '==================='
@@ -19,6 +12,9 @@ echo '==================='
 # シンボリック・リンク経由での利用のための絶対パス
 PATH_FILE_SCRIPT=$(readlink $0)
 PATH_DIR_CURR=$(cd $(dirname ${PATH_FILE_SCRIPT:-$0}); pwd)
+
+# 環境変数ファイルの読み込み
+source "${PATH_DIR_CURR}/ENVFILE.env"
 
 # 保存先のパス指定
 NAME_FILE_DATA="barcode_${ID_DATE}.csv"
