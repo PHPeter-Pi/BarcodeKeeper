@@ -1,6 +1,6 @@
 #!/bin/sh
-# このスクリプトはラズパイ Zero（ARM v6l）の Docker + docker-compose
-# 上で、BarcodeKeeper を動かすスクリプトです。
+# このスクリプトは BarcodeKeeper を Docker + docker-compose 上で、
+# 動かすスクリプトです。ラズパイ Zero（ARM v6l）専用です。
 # このスクリプトが呼び出されると、BarcodeKeeper のコンテナを起動し、標準
 # 入力待ち（バーコード入力待ち）になります。
 #
@@ -10,6 +10,9 @@
 # 2. pi ユーザーの自動ログインを設定します。
 #      $ sudo raspi-config
 # 3. .bashrc の行頭に以下を追加します。
+#
+# スピード重視の場合は、input_barcode.sh を直接起動してください。詳しく
+# は README.md 参照
 #
 
 # シンボリック・リンク経由での利用のための絶対パス
