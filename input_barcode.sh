@@ -2,9 +2,9 @@
 
 clear
 
-echo '==================='
+echo '======================'
 echo ' バーコードレコーダー'
-echo '==================='
+echo '======================'
 
 # -----------------------------------------------------------------------------
 #  初期設定
@@ -16,7 +16,7 @@ PATH_DIR_CURR=$(cd $(dirname ${PATH_FILE_SCRIPT:-$0}); pwd)
 # 環境変数ファイルの読み込み
 NAME_FILE_ENV='ENVFILE.env'
 PATH_FILE_ENV="${PATH_DIR_CURR}/${NAME_FILE_ENV}"
-echo 'Source path:' $PATH_FILE_ENV
+#echo 'Source path:' $PATH_FILE_ENV
 export $(grep -v '^#' $PATH_FILE_ENV | xargs)
 
 # 保存先のパス指定
