@@ -7,10 +7,7 @@ echo 'Switching to fbterm'
 fbterm \
   --font-names=mono \
   --font-size=16 \
-  --ambiguous-wide || {
-      echo 'Failed to set fbterm'
-      exit 1
-  }
+  --ambiguous-wide
 
 echo '==================='
 echo ' バーコードレコーダー'
