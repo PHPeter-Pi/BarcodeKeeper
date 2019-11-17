@@ -1,5 +1,13 @@
 #!/bin/sh
 
+fbterm \
+  --font-names=mono \
+  --font-size=16 \
+  --ambiguous-wide || {
+      echo 'Failed to set fbterm'
+      exit 1
+  }
+
 echo '==================='
 echo ' バーコードレコーダー'
 echo '==================='
