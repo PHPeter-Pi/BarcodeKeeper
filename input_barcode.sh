@@ -40,11 +40,6 @@ beep ready
 #  関数
 # -----------------------------------------------------------------------------
 
-isStopCode () {
-    [ "${CODE_STOP}" = "${1}" ]
-    return $?
-}
-
 getNameProduct () {
     name_product=''
     code_jan=$1
@@ -59,15 +54,22 @@ getNameProduct () {
     return 0
 }
 
+isStopCode () {
+    [ "${CODE_STOP}" = "${1}" ]
+    return $?
+}
+
+
 # -----------------------------------------------------------------------------
 #  本体スクリプト
 # -----------------------------------------------------------------------------
 while :
 do
-    read -p 'JAN Code: ' input_code
+    echo -n 'JAN Code:'; beep pi;  read input_code
 
     isStopCode $input_code && {
         echo 'ストップコードを検知しました。プログラムを終了します ...'
+        beep shutdown
         exit 0
     }
 
@@ -76,12 +78,14 @@ do
         ID_MILI=$(($(date +%s%N)/1000000))
 
         getNameProduct $input_code || {
-            echo '商品情報がありません:' $input_code
-            beep ng
             echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA_NG || {
                 echo '保存に失敗しました。再読み込みしてください。'
                 beep ng
+                continue
             }
+            echo '商品情報がありません:' $input_code
+            echo '  登録番号:' $( echo $ID_TIME | sed -r ':a;s/\B[0-9]{3}\>/-&/g;ta' )
+            beep ng
             continue
         }
         # バーコードの読み取り値の保存
@@ -90,7 +94,7 @@ do
             beep ng
             continue
         }
-
+        echo '  登録番号:' $( echo $ID_TIME | sed -r ':a;s/\B[0-9]{3}\>/-&/g;ta' )
         beep ok
     }
 
