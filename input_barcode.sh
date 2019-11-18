@@ -61,23 +61,28 @@ getNameProduct () {
 while :
 do
     read -p 'JAN Code: ' input_code
+
     isStopCode $input_code && {
-        echo 'Stop code detected. Exiting program ...'
+        echo 'ストップコードを検知しました。プログラムを終了します ...'
         exit 0
     }
 
     [ -n "${input_code}" ] && {
         ID_TIME=$(date +'%H%M%S')
         ID_MILI=$(($(date +%s%N)/1000000))
-        echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA || {
-            beep ng
-            continue
-        }
+
         getNameProduct $input_code || {
             echo '商品情報がありません:' $input_code
             beep ng
             continue
         }
+        # バーコードの読み取り値の保存
+        echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA || {
+            echo '保存に失敗しました。再読み込みしてください。'
+            beep ng
+            continue
+        }
+
         beep ok
     }
 
