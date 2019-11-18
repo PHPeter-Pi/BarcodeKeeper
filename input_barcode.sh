@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 clear
 
@@ -43,6 +43,18 @@ isStopCode () {
     return $?
 }
 
+getNameProduct () {
+    name_product=''
+    code_jan=$1
+    path_file_jan_info="/JAN/${code_jan}.json"
+    [ -s $path_file_jan_info ] || {
+        return 1
+    }
+
+    cat $path_file_jan_info | jq -r '.[].Product.productName'
+    return 0
+}
+
 # -----------------------------------------------------------------------------
 #  本体スクリプト
 # -----------------------------------------------------------------------------
@@ -58,6 +70,11 @@ do
         ID_TIME=$(date +'%H%M%S')
         ID_MILI=$(($(date +%s%N)/1000000))
         echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA || {
+            beep ng
+            continue
+        }
+        getNameProduct $input_code || {
+            echo '商品情報がありません:' $input_code
             beep ng
             continue
         }
