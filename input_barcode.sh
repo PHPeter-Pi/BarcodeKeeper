@@ -51,7 +51,9 @@ getNameProduct () {
         return 1
     }
 
-    cat $path_file_jan_info | jq -r '.[].Product.productName | unique'
+    cat $path_file_jan_info | jq -r '[.[].Product.productName] | unique' || {
+        return 1
+    }
     return 0
 }
 
