@@ -4,6 +4,7 @@ USER root
 COPY ./input_barcode.sh /usr/local/bin/input_barcode
 COPY ./setup-beep.sh /setup-beep.sh
 RUN apk --no-cache add \
+        bash \
         git \
         python3 \
         python3-dev \
