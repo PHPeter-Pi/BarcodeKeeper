@@ -23,9 +23,11 @@ export $(grep -v '^#' $PATH_FILE_ENV | xargs)
 ID_DATE=$(date +'%Y%m%d')
 
 # 保存先のパス指定
-NAME_FILE_DATA="barcode_${ID_DATE:-offline}.csv"
+NAME_FILE_DATA_OK="barcode_${ID_DATE:-offline}_OK.csv"
+NAME_FILE_DATA_NG="barcode_${ID_DATE:-offline}_NG.csv"
 PATH_DIR_DATA="/data"
-PATH_FILE_DATA="${PATH_DIR_DATA}/${NAME_FILE_DATA}"
+PATH_FILE_DATA_OK="${PATH_DIR_DATA}/${NAME_FILE_DATA_OK}"
+PATH_FILE_DATA_NG="${PATH_DIR_DATA}/${NAME_FILE_DATA_NG}"
 
 # 処理を停止する読み取りコード
 CODE_STOP="${CODE_STOP:-STOP}"
@@ -76,10 +78,14 @@ do
         getNameProduct $input_code || {
             echo '商品情報がありません:' $input_code
             beep ng
+            echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA_NG || {
+                echo '保存に失敗しました。再読み込みしてください。'
+                beep ng
+            }
             continue
         }
         # バーコードの読み取り値の保存
-        echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA || {
+        echo "\"${ID_TIME}\",\"${ID_MILI}\",\"${input_code}\"" >> $PATH_FILE_DATA_OK || {
             echo '保存に失敗しました。再読み込みしてください。'
             beep ng
             continue
