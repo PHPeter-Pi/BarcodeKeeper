@@ -30,8 +30,7 @@ PATH_FILE_DATA_OK="${PATH_DIR_DATA}/${NAME_FILE_DATA_OK}"
 PATH_FILE_DATA_NG="${PATH_DIR_DATA}/${NAME_FILE_DATA_NG}"
 
 # 処理を停止する読み取りコード
-CODE_STOP="${CODE_STOP:-STOP}"
-echo '- STOP CODE is:' $CODE_STOP
+CODE_STOP="${CODE_STOP:-none}"
 
 # 起動音
 beep ready
@@ -59,16 +58,23 @@ isStopCode () {
     return $?
 }
 
-
 # -----------------------------------------------------------------------------
 #  本体スクリプト
 # -----------------------------------------------------------------------------
+
+if [ "${CODE_STOP}" = "none" ]; then
+    echo '- ストップ・コードの入力：処理を終了するためのバーコードを読み込んでください。'
+    echo -n '  STOP Code:'; beep pi; read CODE_STOP
+
+    echo '- ストップ・コード:' $CODE_STOP
+fi
+
 while :
 do
-    echo -n 'JAN Code:'; beep pi;  read input_code
+    echo -n 'JAN Code:'; beep pi; read input_code
 
     isStopCode $input_code && {
-        echo 'ストップコードを検知しました。プログラムを終了します ...'
+        echo 'ストップ・コードを検知しました。プログラムを終了します ...'
         beep shutdown
         exit 0
     }
