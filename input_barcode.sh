@@ -1,11 +1,5 @@
 #!/bin/bash
 
-clear
-
-echo '======================'
-echo ' バーコードレコーダー'
-echo '======================'
-
 # -----------------------------------------------------------------------------
 #  初期設定
 # -----------------------------------------------------------------------------
@@ -32,12 +26,20 @@ PATH_FILE_DATA_NG="${PATH_DIR_DATA}/${NAME_FILE_DATA_NG}"
 # 処理を停止する読み取りコード
 CODE_STOP="${CODE_STOP:-none}"
 
+# 罫線描画用のデフォルト値
+CHAR_HR_DEFAULT='-'
+SCREEN_WIDTH_DEFAULT=20
+
 # 起動音
 beep ready
 
 # -----------------------------------------------------------------------------
 #  関数
 # -----------------------------------------------------------------------------
+
+echo_hr(){
+  printf -v _hr "%*s" ${SCREEN_WIDTH} && echo ${_hr// /${1-$CHAR_HR_DEFAULT}}
+}
 
 getNameProduct () {
     name_product=''
@@ -62,15 +64,29 @@ isStopCode () {
 #  本体スクリプト
 # -----------------------------------------------------------------------------
 
-if [ "${CODE_STOP}" = "none" ]; then
-    echo '- ストップ・コードの入力：処理を終了するためのバーコードを読み込んでください。'
-    echo -n '  STOP Code:'; beep pi; read CODE_STOP
+clear
 
-    echo '- ストップ・コード:' $CODE_STOP
+if [ -n "${TERM}" ];
+  then SCREEN_WIDTH=$(tput cols);
+  else SCREEN_WIDTH=$SCREEN_WIDTH_DEFAULT;
+fi
+
+echo_hr =
+echo ' バーコードレコーダー'
+echo_hr =
+
+if [ "${CODE_STOP}" = "none" ]; then
+    echo '- ストップ・コードの入力:'
+    echo '  処理を終了する際に使うバーコードを読み込んでくだ'
+    echo '  さい。このコードが読み込まれると処理を終了します。'
+    echo -n '  STOP Code:'; beep pi; read input_code
+    CODE_STOP=$input_code && echo '- ストップ・コードは:' $CODE_STOP
 fi
 
 while :
 do
+    echo_hr
+
     echo -n 'JAN Code:'; beep pi; read input_code
 
     isStopCode $input_code && {
